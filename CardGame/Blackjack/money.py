@@ -6,3 +6,6 @@ class Money:
     def bet(self, amount):
         self.value -= amount
         return amount
+
+    def pay(self, payout):
+        self.value += payout
