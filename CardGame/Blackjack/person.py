@@ -4,7 +4,7 @@ from ..Cards.hand import Hand
 from .money import Money
 
 
-class Player:
+class Player():
     def __init__(self, hand: Hand = None, money: Money = None) -> None:
         self.hand = hand
         self.money = money
@@ -60,6 +60,8 @@ class Player:
 class Dealer(Player):
     def __init__(self, deck: Deck, hand: Hand = None, money: Money = None) -> None:
         super().__init__(hand=hand, money=money)
+        if not isinstance(deck, Deck):
+            raise TypeError("'deck' must be of type Deck")
         self.deck = deck
 
     def dealCard(self) -> Card:
