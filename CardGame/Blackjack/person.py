@@ -4,7 +4,7 @@ from ..Cards.hand import Hand
 from .money import Money
 
 
-class Player:
+class Player():
     def __init__(self, hand: Hand = None, money: Money = None) -> None:
         if hand is not None and not isinstance(hand, Hand):
             raise TypeError("'hand' must be of type Hand")
