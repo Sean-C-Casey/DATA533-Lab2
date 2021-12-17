@@ -7,8 +7,10 @@ class Money:
         if buy_in < 1:
             raise ValueError("'buy_in' must be a positive value")
         self.value = buy_in
+        self.wager = 0
 
-    def bet(self) -> int:
+    # def bet(self) -> int:
+    def bet(self) -> None:
         amount = None
         amount = input("Please place your bet: ")
         while not amount.isdigit():
@@ -16,17 +18,27 @@ class Money:
         amount = int(amount)
         if amount <= self.value and amount > 0:
             self.value -= amount
-            return amount
+            # return amount
+            self.wager = amount
         else:
             print("That is not a valid bet, please try again.")
-            return self.bet()
+            # return self.bet()
+            self.bet()
 
-    def payout(self, amount: int, multiplier: int or float) -> None:
-        if not isinstance(amount, int):
-            raise TypeError("'amount' must be type int")
+    # This function accepts the bet amount as an argument
+    # def payout(self, amount: int, multiplier: int or float) -> None:
+    #     if not isinstance(amount, int):
+    #         raise TypeError("'amount' must be type int")
+    #     if type(multiplier) not in (int, float):
+    #         raise TypeError("'multiplier' must be type int or float")
+    #     self.value += int(multiplier * amount)
+    
+    # This function use the 'wager' attribute as the bet amount
+    def payout(self, multiplier: int or float) -> None:
         if type(multiplier) not in (int, float):
             raise TypeError("'multiplier' must be type int or float")
-        self.value += int(multiplier * amount)
+        self.value += int(multiplier * self.wager)
+        self.wager = 0
 
     def blackjack(self, amount: int) -> None:
         print(f"That's blackjack!\n You won ${1.5 * amount}!")

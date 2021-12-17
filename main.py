@@ -4,7 +4,7 @@ from CardGame.Blackjack.game import Game
 
 def demo():
     print("Demoing the game... \n")
-    blackjack = Game()
+    blackjack = Game(3)
     blackjack.run()
 
 

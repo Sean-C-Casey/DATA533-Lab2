@@ -5,11 +5,12 @@ from .money import Money
 
 
 class Player():
-    def __init__(self, hand: Hand = None, money: Money = None) -> None:
+    def __init__(self, name: str, hand: Hand = None, money: Money = None) -> None:
         if hand is not None and not isinstance(hand, Hand):
             raise TypeError("'hand' must be of type Hand")
         if money is not None and not isinstance(money, Money):
             raise TypeError("'money' must be of type Money")
+        self.name = name
         self.hand = hand
         self.money = money
 
@@ -63,7 +64,7 @@ class Player():
 
 class Dealer(Player):
     def __init__(self, deck: Deck, hand: Hand = None, money: Money = None) -> None:
-        super().__init__(hand=hand, money=money)
+        super().__init__(name="Dealer", hand=hand, money=money)
         if not isinstance(deck, Deck):
             raise TypeError("'deck' must be of type Deck")
         self.deck = deck
