@@ -35,32 +35,42 @@ class Game():
 
         self.dealer.hand = self.dealer.dealHand(1)
 
-    def run(self):
+    def run(self) -> None:
+        if self.num_players == 1:
+            self.__run_singleplayer()
+        else:
+            self.__run_multiplayer()
+    
+    def __run_multiplayer(self) -> None:
+        pass
+
+    def __run_singleplayer(self) -> None:
+        player = self.players[0]
         live_table = True
         while live_table == True:
             self.newRound()
-            print(self.players[0].showMoney())
-            bet = self.players[0].money.bet()
+            print(player.showMoney())
+            bet = player.money.bet()
             print("Dealer's hand: ", self.dealer.displayHand())
-            print("Your hand: ", self.players[0].displayHand(), "\n")
+            print("Your hand: ", player.displayHand(), "\n")
             self.dealer.addCardToHand(self.dealer.dealCard())
 
             # Phase where player hits or stands
-            hit = self.players[0].hit_stand()
+            hit = player.hit_stand()
             while hit == True:
-                self.players[0].addCardToHand(self.dealer.dealCard())
-                print("Your hand: ", self.players[0].displayHand())
+                player.addCardToHand(self.dealer.dealCard())
+                print("Your hand: ", player.displayHand())
 
-                if self.players[0].getHandPoints() > 21:
+                if player.getHandPoints() > 21:
                     print("You go bust!")
-                    self.players[0].discardHand()
+                    player.discardHand()
                     hit = False
-                elif self.players[0].getHandPoints() == 21:
+                elif player.getHandPoints() == 21:
                     print("That's a blackjack!")
                     hit = False
                 else:
-                    hit = self.players[0].hit_stand()
-            player_points = self.players[0].getHandPoints()
+                    hit = player.hit_stand()
+            player_points = player.getHandPoints()
 
             # Dealer's turn to hit or stand now
             if player_points > 0 and player_points != 21:
@@ -73,27 +83,27 @@ class Game():
             # Finished dealing cards, not compare hand scores
             if player_points == dealer_points:
                 print("Dealer's hand: ", self.dealer.displayHand())
-                print("Your hand: ", self.players[0].displayHand())
+                print("Your hand: ", player.displayHand())
                 print("That's a tie. \n")
-                self.players[0].money.payout(bet, 1)
+                player.money.payout(bet, 1)
             elif player_points == 21:
                 print(f"You win ${1.5 * bet}")
-                self.players[0].money.payout(bet, 2.5)
+                player.money.payout(bet, 2.5)
             elif player_points > dealer_points:
                 print("Dealer's hand: ", self.dealer.displayHand())
-                print("Your hand: ", self.players[0].displayHand())
+                print("Your hand: ", player.displayHand())
                 print(f"You won ${bet}! \n")
-                self.players[0].money.payout(bet, 2)
+                player.money.payout(bet, 2)
             else:
                 print("The dealer wins that round. \n")
 
             # Determine if whether game is won, lost, or still in progress
-            if self.players[0].money.value <= 0:
-                print(f"You have ${self.players[0].money.value}\nGame Over :(")
+            if player.money.value <= 0:
+                print(f"You have ${player.money.value}\nGame Over :(")
                 self.players = [Player(money=Money()) for i in range(self.num_players)]
                 live_table = False
-            elif self.players[0].money.value >= Money.win_amount:
-                print(f"You have ${self.players[0].money.value}\nYou win!")
+            elif player.money.value >= Money.win_amount:
+                print(f"You have ${player.money.value}\nYou win!")
                 self.players = [Player(money=Money()) for i in range(self.num_players)]
                 live_table = False
 
